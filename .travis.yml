@@ -1,0 +1,11 @@
+language: python
+cache: pip
+python:
+  - "3.5"
+# command to install dependencies
+#stages:
+install:
+  - pip install -q -r requirements.txt
+# command to run tests
+#script:
+#  - pytest --pyargs mlpipe 
