@@ -21,7 +21,7 @@ def encrypt(filename,password):
 @click.argument('filename')
 @click.option('--password', '-p', default='pass$1234', help='Password to encrypt the file')
 def main(filename, password):
-    print(f"Input File {filename} ✨")
+    print(f"{filename = } ✨")
     encrypt(filename, password)
 
 if __name__ == "__main__":
