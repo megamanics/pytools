@@ -1,21 +1,28 @@
-# -*- coding: utf-8 -*-
+#!/usr/bin/env python
 """
 Spyder Editor
 
 This is a temporary script file.
 """
-import PyPDF2
-import fire
+from PyPDF2 import PdfReader, PdfWriter
+import click
 
+def encrypt(filename,password):
+    reader = PdfReader(filename)
+    writer = PdfWriter()
+    for page in reader.pages:
+        page.compress_content_streams()
+        writer.addPage(page)
+    writer.encrypt(password)
+    with open(filename.removesuffix(".pdf") + ".encrypted.pdf", "wb") as f:
+        writer.write(f)
 
-pdf = open("C:\\Users\\vinayaks\\Documents\\TheKSMTrustCetrtificate.pdf", 'rb')
-pdfReader = PyPDF2.PdfFileReader(pdf)
-pdfWriter = PyPDF2.PdfFileWriter()
+@click.command()
+@click.argument('filename')
+@click.option('--password', '-p', default='pass$1234', help='Password to encrypt the file')
+def main(filename, password):
+    print(f"Input File {filename} ✨")
+    encrypt(filename, password)
 
-for pageNum in range(pdfReader.numPages):
-    pdfWriter.addPage(pdfReader.getPage(pageNum))
-    
-pdfWriter.encrypt('ksmtrust123','')
-resultPdf = open("C:\\Users\\vinayaks\\Documents\\ksmtrustcert.pdf", 'wb')
-pdfWriter.write(resultPdf)
-resultPdf.close()
+if __name__ == "__main__":
+    main()
